@@ -1,0 +1,3 @@
+document.getElementById("year").textContent=new Date().getFullYear();
+document.querySelectorAll("[data-dialog]").forEach(b=>b.addEventListener("click",()=>{const d=document.getElementById(b.dataset.dialog);if(d)d.showModal()}));
+document.querySelectorAll("dialog").forEach(d=>{d.querySelector(".dialog-close")?.addEventListener("click",()=>d.close());d.addEventListener("click",e=>{const r=d.getBoundingClientRect();if(!(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom))d.close()})});
