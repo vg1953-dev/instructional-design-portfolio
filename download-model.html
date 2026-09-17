@@ -5,31 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Download Excel Model | Vignesh Govindraj</title>
 <link rel="stylesheet" href="styles.css">
-<style>.download-wrap{min-height:100vh;display:grid;place-items:center;padding:40px}.download-card{max-width:700px;border:1px solid rgba(255,255,255,.14);border-radius:24px;padding:34px;background:rgba(255,255,255,.035)}.download-card h1{margin-top:8px}.status{margin:20px 0;opacity:.8}.error{color:#ff9b9b}</style>
+<style>.download-wrap{min-height:100vh;display:grid;place-items:center;padding:40px}.download-card{max-width:700px;border:1px solid rgba(255,255,255,.14);border-radius:24px;padding:34px;background:rgba(255,255,255,.035)}.download-card h1{margin-top:8px}.status{margin:20px 0;opacity:.8}</style>
 </head>
 <body>
-<main class="download-wrap"><section class="download-card"><p class="eyebrow">Finance & Analytics Portfolio</p><h1>Preparing Excel workbook…</h1><p class="status" id="status">Reconstructing the manufacturing cost and profitability model.</p><div class="hero-actions"><a class="button secondary" href="finance.html">Back to finance case study</a></div></section></main>
+<main class="download-wrap"><section class="download-card"><p class="eyebrow">Finance & Analytics Portfolio</p><h1>Excel workbook ready</h1><p class="status">Download the complete Manufacturing Cost & Profitability Analysis workbook, including the model, variance analysis, scenarios, and dashboard sheets.</p><div class="hero-actions"><a id="download" class="button primary" href="assets/Manufacturing_Cost_Profitability_Analysis.xlsx" download>Download Excel Workbook</a><a class="button secondary" href="finance.html">Back to finance case study</a></div></section></main>
 <script>
-(async()=>{
-  const status=document.getElementById('status');
-  const parts=[1,2,3,4,5,6].map(n=>`assets/model/model.part0${n}`);
-  try{
-    const texts=await Promise.all(parts.map(async p=>{const r=await fetch(p,{cache:'no-store'});if(!r.ok)throw new Error(`Could not load ${p}`);return (await r.text()).trim();}));
-    const base64=texts.join('').replace(/\s+/g,'');
-    const binary=atob(base64);
-    const bytes=new Uint8Array(binary.length);
-    for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
-    const blob=new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url;
-    a.download='Manufacturing_Cost_Profitability_Analysis.xlsx';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),5000);
-    status.textContent='Download started. You can return to the finance case study.';
-  }catch(err){status.className='status error';status.textContent='The workbook could not be prepared. Please return to the case study and try again.';console.error(err);}
-})();
+window.addEventListener('load',()=>{
+  const a=document.getElementById('download');
+  if(a){setTimeout(()=>a.click(),300);}
+});
 </script>
-</body></html>
+</body>
+</html>
