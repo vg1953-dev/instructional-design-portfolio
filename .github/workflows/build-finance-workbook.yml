@@ -1,0 +1,44 @@
+name: Build finance workbook
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_finance_model.py'
+      - '.github/workflows/build-finance-workbook.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install workbook dependency
+        run: pip install openpyxl
+
+      - name: Build Excel workbook
+        run: python scripts/build_finance_model.py
+
+      - name: Commit generated workbook
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/Manufacturing_Cost_Profitability_Analysis.xlsx
+          if git diff --cached --quiet; then
+            echo 'Workbook unchanged.'
+            exit 0
+          fi
+          git commit -m 'Build downloadable finance Excel workbook'
+          git push
